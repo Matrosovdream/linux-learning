@@ -1,0 +1,2 @@
+# This folder is bind-mounted into the lab at /work and persists across rebuilds.
+# Your own files here are gitignored; this .gitkeep just keeps the folder in git.

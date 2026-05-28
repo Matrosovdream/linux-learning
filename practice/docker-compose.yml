@@ -1,0 +1,27 @@
+# Your single, growing Linux server for the whole course.
+# Start it:   docker compose up -d
+# Shell in:   docker compose exec server bash
+# Status:     docker compose ps
+# Stop:       docker compose stop        (keep it, just pause)
+# Rebuild:    docker compose up -d --build   (after editing the Dockerfile)
+# Reset:      docker compose down        (removes the container; /work persists)
+services:
+  server:
+    build: .
+    image: linux-lab
+    container_name: linux-lab
+    hostname: linux-lab
+    init: true                 # proper signal handling for PID 1
+    restart: unless-stopped    # the container-native "start at boot" (see lesson 14)
+    volumes:
+      # Persistent work area: host ./server-data  <->  container /work
+      - ./server-data:/work
+    ports:
+      # Published for the web lessons (Part 7). Reach them from your Mac:
+      #   http://localhost:1010  ->  container :80   (nginx, lesson 22+)
+      #   https://localhost:1011 ->  container :443  (TLS, lesson 23)
+      - "1010:80"
+      - "1011:443"
+    # Keep STDIN/TTY so interactive shells behave well.
+    stdin_open: true
+    tty: true
